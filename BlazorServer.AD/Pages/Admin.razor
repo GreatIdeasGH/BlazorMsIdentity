@@ -1,0 +1,191 @@
+﻿@page "/admin"
+@using BlazorMsIdentity.Shared.Policy
+@using BlazorMsIdentity.Shared.Models
+@using Microsoft.Extensions.Logging
+@using Microsoft.Extensions.Options
+@using Microsoft.Graph.Auth
+@using Microsoft.Identity.Client
+@inject GraphServiceClient _graphServiceClient
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler _consentHandler
+@inject ILogger<Admin> _logger
+@attribute [Authorize(Policy = CustomPolicies.AdminPolicy)]
+
+<h3>Admin Control</h3>
+
+<hr>
+
+<div class="row">
+    <div class="col-xl-6">
+        
+        @if (isSuccess)
+        {
+            <div class="alert">
+                <pre>User ID: @NewUser.Id</pre>
+            </div>
+        }
+        
+        <EditForm Model="UserModel" OnValidSubmit="@OnValidSubmit">
+            <DataAnnotationsValidator/>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <InputText @bind-Value="@UserModel.DisplayName"
+                               class="form-control"
+                               placeholder="Display Name"
+                               DisplayName="Display Name"></InputText>
+                    <ValidationMessage For="@(() => UserModel.DisplayName)"/>
+                </div>
+                <div class="col-sm-6">
+                    <InputText @bind-Value="@UserModel.UserPrincipalName"
+                               class="form-control"
+                               placeholder="Username"
+                               DisplayName="Username"></InputText>
+                    <ValidationMessage For="@(() => UserModel.UserPrincipalName)"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm">
+                    <InputText @bind-Value="@UserModel.FirstName"
+                               class="form-control"
+                               placeholder="First Name"
+                               DisplayName="First Name"></InputText>
+                    <ValidationMessage For="@(() => UserModel.FirstName)"/>
+                </div>
+                <div class="col-sm">
+                    <InputText @bind-Value="@UserModel.LastName"
+                               class="form-control"
+                               placeholder="Surname"
+                               DisplayName="Surname"></InputText>
+                    <ValidationMessage For="@(() => UserModel.LastName)"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm">
+                    <InputText @bind-Value="@UserModel.MobilePhone"
+                               class="form-control"
+                               placeholder="Mobile Phone"
+                               DisplayName="Mobile Phone"></InputText>
+                    <ValidationMessage For="@(() => UserModel.MobilePhone)"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm">
+                    <InputText @bind-Value="@UserModel.Password"
+                               class="form-control"
+                               placeholder="Password"
+                               type="password"
+                               DisplayName="Password"></InputText>
+                    <ValidationMessage For="@(() => UserModel.Password)"/>
+                </div>
+            </div>
+
+
+            <button class="btn btn-primary" type="submit">Save</button>
+
+        </EditForm>
+        
+        @if(hasError)
+        {
+            <div class="text-danger">
+                @errorLabel
+            </div>
+        }
+    </div>
+    <div class="col-xl-6">
+        
+    </div>
+</div>
+
+
+@code {
+
+    [Inject] public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
+
+    AzureAdOptions _azureAdOptions = new ();
+
+    bool isSuccess;
+    bool hasError;
+    string errorLabel;
+    public UserDto UserModel { get; set; } = new();
+
+    private User NewUser;
+
+    private ClientCredentialProvider AuthProvider()
+    {
+        _azureAdOptions = OptionsMonitor.CurrentValue;
+        
+        IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
+            .Create(_azureAdOptions.ClientId)
+            .WithTenantId(_azureAdOptions.TenantId)
+            .WithClientSecret(_azureAdOptions.ClientSecret)
+            .Build();
+
+        ClientCredentialProvider authProvider = new ClientCredentialProvider(confidentialClientApplication);
+
+        return authProvider;
+    }
+
+    private async Task OnValidSubmit()
+    {
+        // var authProvider = AuthProvider();
+        
+        var user = new User
+        {
+            DisplayName = UserModel.DisplayName,
+            UserPrincipalName = UserModel.UserPrincipalName,
+            GivenName = UserModel.FirstName,
+            Surname = UserModel.LastName,
+            // Mail = UserModel.UserPrincipalName,
+            MobilePhone = UserModel.MobilePhone,
+            AccountEnabled = true,
+            MailNickname = UserModel.DisplayName,
+            PasswordProfile = new PasswordProfile
+            {
+                ForceChangePasswordNextSignIn = true,
+                Password = UserModel.Password
+            }
+        };
+
+        try
+        {
+            var result = await _graphServiceClient
+                .Users
+                .Request()
+                .AddAsync(user);
+
+            if (result is not null)
+            {
+                isSuccess = true;
+
+                NewUser = result;
+            }
+        }
+        catch (ServiceException e)
+        {
+            hasError = true;
+            errorLabel = e.Error.Message;
+            _logger.LogError("Could not process the task", e.Message);
+        }
+        catch (Exception e)
+        {
+            hasError = true;
+            _logger.LogError("Could not process the task", e.Message);
+            _consentHandler.HandleException(e);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            base.OnInitialized();
+        }
+        catch (Exception e)
+        {
+            _consentHandler.HandleException(e);
+        }
+    }
+
+}
