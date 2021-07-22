@@ -1,23 +1,30 @@
 ﻿@page "/"
 @using Microsoft.Extensions.Logging
+@using BlazorMsIdentity.Shared.Policy
+@using Microsoft.Extensions.Options
+@using Microsoft.Graph.Auth
+@using Microsoft.Identity.Client
+@using BlazorMsIdentity.Shared.Models
+@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 @inject ILogger<Index> Logger
+@attribute [Authorize]
 
 <h1>Yelloo!</h1>
 
-
 <AuthorizeView>
     <Authorized>
-        <p>Your Claims</p>
-        <table class="table">
+        <p>Your Roles</p>
+        <table class="table table-sm">
             <thead>
             <tr>
                 <th>Claim Type</th>
-                <th>Value</th>
+                <th>Claim Value</th>
             </tr>
             </thead>
-            
+
             <tbody>
-            @foreach (var claim in context.User.Claims)
+            @* @foreach (var claim in context.User.Claims.Where(x=>x.Type == ClaimTypes.Role)){} *@
+            @foreach (var claim in context.User.Claims.Where(x => x.Type != "aio"))
             {
                 <tr>
                     <td>@claim.Type</td>
@@ -28,11 +35,106 @@
         </table>
     </Authorized>
     <NotAuthorized>
-        <p>Please login to view your users</p>
+        <p>Please login</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<hr>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Here are all users</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Display Name</th>
+                <th>Given Name</th>
+                <th>Surname</th>
+                <th>Mobile Phone</th>
+                <th>Job Title</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in _users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.DisplayName</td>
+                    <td>@user.GivenName</td>
+                    <td>@user.Surname</td>
+                    <td>@user.MobilePhone</td>
+                    <td>@user.JobTitle</td>
+                    <td>@user.Mail</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authourized</p>
     </NotAuthorized>
 </AuthorizeView>
 
 @code
 {
+    IGraphServiceUsersCollectionPage _users = new GraphServiceUsersCollectionPage();
     
+    [Inject] public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
+
+    AzureAdOptions _azureAdOptions = new ();
+
+    bool isSuccess;
+    bool hasError;
+    string errorLabel;
+    GraphServiceClient graphClient;
+    public UserDto UserModel { get; set; } = new();
+
+    private User NewUser;
+
+    private ClientCredentialProvider AuthProvider()
+    {
+        _azureAdOptions = OptionsMonitor.CurrentValue;
+        
+        IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
+            .Create(_azureAdOptions.ClientId)
+            .WithTenantId(_azureAdOptions.TenantId)
+            .WithClientSecret(_azureAdOptions.ClientSecret)
+            .Build();
+
+        ClientCredentialProvider authProvider = new ClientCredentialProvider(confidentialClientApplication);
+
+        return authProvider;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        graphClient = new GraphServiceClient(AuthProvider());
+        
+        try
+        {
+            var graphRequest = graphClient
+                .Users
+                .Request()
+                .Select(u => new
+                {
+                    u.Id,
+                    u.DisplayName,
+                    u.GivenName,
+                    u.Surname,
+                    u.MobilePhone,
+                    u.JobTitle,
+                    u.Mail
+                })
+                .OrderBy("DisplayName");
+            var users = await graphRequest.GetAsync();
+            _users = users;
+        }
+        catch (Exception ex)
+        {
+            // ConsentHandler.HandleException(ex);
+            Logger.LogError("Something went wrong", ex.Message);
+        }
+    }
 }

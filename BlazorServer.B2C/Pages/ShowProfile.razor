@@ -1,6 +1,7 @@
 ﻿@page "/showprofile"
 @inject GraphServiceClient GraphServiceClient
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+@inject IHttpClientFactory httpClientFactory
 
 <div class="card">
     <h3 class="card-header bg-success text-white">User Profile</h3>
@@ -56,8 +57,9 @@
     {
         try
         {
-            // user = await GraphServiceClient.Me.Request().GetAsync();
-            // photo = await GetPhoto();
+            user = await GraphServiceClient.Me.Request().GetAsync();
+            photo = await GetPhoto();
+
         }
         catch (Exception ex)
         {
@@ -68,7 +70,6 @@
     protected async Task<string> GetPhoto()
     {
         string photo;
-
         try
         {
             using (var photoStream = await GraphServiceClient.Me.Photo.Content.Request().GetAsync())

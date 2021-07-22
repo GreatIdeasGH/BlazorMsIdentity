@@ -51,6 +51,7 @@ namespace BlazorServer.AD
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
             
+            // Register Policies
             services.RegisterPolicies();
 
             services.AddRazorPages();

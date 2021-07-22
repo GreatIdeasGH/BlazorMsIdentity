@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorMsIdentity.Shared;
+using BlazorMsIdentity.Shared.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
@@ -31,8 +33,11 @@ namespace BlazorServer.B2C
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Azure AD Settings
+            services.Configure<AzureAdOptions>(Configuration.GetSection(AzureAdOptions.AzureAdB2C));
+            
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAdB2C"));
+                .AddMicrosoftIdentityWebApp(Configuration.GetSection(AzureAdOptions.AzureAdB2C));
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
 
@@ -49,6 +54,9 @@ namespace BlazorServer.B2C
             services.AddSingleton<WeatherForecastService>();
 
             services.AddSingleton<GraphServiceClient>();
+            
+            // Register Policies
+            services.RegisterPolicies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
