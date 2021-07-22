@@ -24,7 +24,7 @@ namespace BlazorMsIdentity.Shared.Services
                 options.AddPolicy(CustomPolicies.DirectorPolicy, CustomPolicies.IsDirector());
                 options.AddPolicy(CustomPolicies.AccountantPolicy, CustomPolicies.IsAccountant());
 
-                options.FallbackPolicy = options.DefaultPolicy;
+                // options.FallbackPolicy = options.DefaultPolicy;
             });
            
            // By default, all incoming requests will be authorized according to the default policy

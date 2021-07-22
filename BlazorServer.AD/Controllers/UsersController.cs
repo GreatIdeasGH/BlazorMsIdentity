@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
-using Microsoft.Identity.Client;
 
 namespace BlazorServer.AD.Controllers
 {
@@ -30,6 +29,11 @@ namespace BlazorServer.AD.Controllers
             {
                 var user = await _graphServiceClient.Me.Request().GetAsync();
                 return Ok(user);
+            }
+            catch (ServiceException ex)
+            {
+                _logger.LogError("You dont have access to this resource", ex);
+                return UnprocessableEntity("You dont have access to this resource");
             }
             catch (Exception ex)
             {

@@ -3,22 +3,13 @@
      <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="InvisibleApi" Version="0.0.1" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.14.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\FONT-LICENSE" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlazorMsIdentity.Shared\BlazorMsIdentity.Shared.csproj" />

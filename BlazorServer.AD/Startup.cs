@@ -20,8 +20,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorServer.AD.Data;
+using InvisibleApi.Extensions;
+using InvisibleApi.Models.InvisibleApiConfigurations;
 using Microsoft.Graph;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 
 namespace BlazorServer.AD
 {
@@ -73,6 +76,12 @@ namespace BlazorServer.AD
             services.Configure<AzureAdOptions>(Configuration.GetSection("AzureAd"));
             
             services.AddSingleton<WeatherForecastService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +108,21 @@ namespace BlazorServer.AD
                     .AllowCredentials());
             
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+
+
+            app.UseInvisibleApis(new List<InvisibleApiConfiguration>
+            {
+                new()
+                {
+                    Endpoint = "/api/user",
+                    HttpVerb = "DELETE",
+                    Header = "HeaderForDeleteHeader",
+                    Value = "HeaderForDeleteValue"
+                }
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

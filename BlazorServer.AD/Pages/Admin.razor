@@ -8,7 +8,8 @@
 @inject GraphServiceClient _graphServiceClient
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler _consentHandler
 @inject ILogger<Admin> _logger
-@attribute [Authorize(Policy = CustomPolicies.AdminPolicy)]
+@* @attribute [Authorize(Policy = CustomPolicies.AdminPolicy)] *@
+@attribute [Authorize]
 
 <h3>Admin Control</h3>
 
@@ -37,7 +38,7 @@
                 <div class="col-sm-6">
                     <InputText @bind-Value="@UserModel.UserPrincipalName"
                                class="form-control"
-                               placeholder="Username"
+                               placeholder="user@email.com"
                                DisplayName="Username"></InputText>
                     <ValidationMessage For="@(() => UserModel.UserPrincipalName)"/>
                 </div>
@@ -80,8 +81,7 @@
                     <ValidationMessage For="@(() => UserModel.Password)"/>
                 </div>
             </div>
-
-
+            
             <button class="btn btn-primary" type="submit">Save</button>
 
         </EditForm>

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServer.AD.Controllers
@@ -13,9 +8,10 @@ namespace BlazorServer.AD.Controllers
     {
         // GET: api/User
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var result = new string[] { "value1", "value2" };
+            return Ok(result);
         }
 
         // GET: api/User/5
@@ -38,9 +34,10 @@ namespace BlazorServer.AD.Controllers
         }
 
         // DELETE: api/User/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete()]
+        public IActionResult Delete()
         {
+            return Ok("Deleted all records");
         }
     }
 }

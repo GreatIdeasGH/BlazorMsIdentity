@@ -4,7 +4,7 @@
 @inject GraphServiceClient GraphServiceClient
 @inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
 @inject ILogger<Index> Logger
-
+@attribute [Authorize]
 
 <h1>Yelloo!</h1>
 
@@ -101,7 +101,7 @@
         }
         catch (Exception ex)
         {
-            // ConsentHandler.HandleException(ex);
+            ConsentHandler.HandleException(ex);
             Logger.LogError("Something went wrong", ex.Message);
         }
     }
