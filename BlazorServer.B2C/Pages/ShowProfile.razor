@@ -1,6 +1,9 @@
 ﻿@page "/showprofile"
-@inject GraphServiceClient GraphServiceClient
-@inject MicrosoftIdentityConsentAndConditionalAccessHandler ConsentHandler
+@using Microsoft.Graph.Auth
+@using Microsoft.Identity.Client
+@using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Logging
+@inject ILogger<ShowProfile> _logger
 @inject IHttpClientFactory httpClientFactory
 
 <div class="card">
@@ -52,18 +55,41 @@
 @code {
     User user;
     string photo;
+    
+    [Inject] public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
+
+    AzureAdOptions _azureAdOptions = new ();
+    
+    GraphServiceClient graphClient;
+
+    private ClientCredentialProvider AuthProvider()
+    {
+        _azureAdOptions = OptionsMonitor.CurrentValue;
+
+        IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
+            .Create(_azureAdOptions.ClientId)
+            .WithTenantId(_azureAdOptions.TenantId)
+            .WithClientSecret(_azureAdOptions.ClientSecret)
+            .Build();
+
+        ClientCredentialProvider authProvider = new ClientCredentialProvider(confidentialClientApplication);
+
+        return authProvider;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            user = await GraphServiceClient.Me.Request().GetAsync();
+            graphClient = new GraphServiceClient(AuthProvider());
+            
+            user = await graphClient.Me.Request().GetAsync();
             photo = await GetPhoto();
 
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            ConsentHandler.HandleException(ex);
+            _logger.LogError("Could not process the task", e.Message);
         }
     }
 
@@ -72,7 +98,9 @@
         string photo;
         try
         {
-            using (var photoStream = await GraphServiceClient.Me.Photo.Content.Request().GetAsync())
+            graphClient = new GraphServiceClient(AuthProvider());
+            
+            using (var photoStream = await graphClient.Me.Photo.Content.Request().GetAsync())
             {
                 byte[] photoByte = ((System.IO.MemoryStream) photoStream).ToArray();
                 photo = Convert.ToBase64String(photoByte);

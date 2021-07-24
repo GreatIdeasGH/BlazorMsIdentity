@@ -1,16 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlazorMsIdentity.Shared.Models
 {
-    public class UserDto
+    public class UserBaseDto
     {
         [Required(ErrorMessage = "Display Name is required")]
         public string DisplayName { get; set; }
-        
-        [Required(ErrorMessage = "Username is required")]
-        [EmailAddress(ErrorMessage = "Email address is not valid")]
-        public string UserPrincipalName { get; set; }
         
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }

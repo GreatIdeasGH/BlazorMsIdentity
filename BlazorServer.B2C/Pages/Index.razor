@@ -80,23 +80,26 @@
 @code
 {
     IGraphServiceUsersCollectionPage _users = new GraphServiceUsersCollectionPage();
-    
-    [Inject] public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
 
-    AzureAdOptions _azureAdOptions = new ();
+    [Inject]
+    public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
+
+    AzureAdOptions _azureAdOptions = new();
 
     bool isSuccess;
     bool hasError;
     string errorLabel;
-    GraphServiceClient graphClient;
-    public UserDto UserModel { get; set; } = new();
+
+    public UserWithEmailDto UserModel { get; set; } = new();
 
     private User NewUser;
+    
+    GraphServiceClient graphClient;
 
     private ClientCredentialProvider AuthProvider()
     {
         _azureAdOptions = OptionsMonitor.CurrentValue;
-        
+
         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
             .Create(_azureAdOptions.ClientId)
             .WithTenantId(_azureAdOptions.TenantId)
@@ -111,7 +114,7 @@
     protected override async Task OnInitializedAsync()
     {
         graphClient = new GraphServiceClient(AuthProvider());
-        
+
         try
         {
             var graphRequest = graphClient
@@ -133,7 +136,7 @@
         }
         catch (Exception ex)
         {
-            // ConsentHandler.HandleException(ex);
+    // ConsentHandler.HandleException(ex);
             Logger.LogError("Something went wrong", ex.Message);
         }
     }

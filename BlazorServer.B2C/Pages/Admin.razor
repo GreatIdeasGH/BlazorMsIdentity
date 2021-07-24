@@ -14,181 +14,205 @@
 
 <div class="row">
     <div class="col-xl-6">
-        
-        @if (isSuccess)
-        {
-            <div class="alert alert-success">
-                <pre>User ID: @NewUser.Id</pre>
-            </div>
-        }
-        
-        <EditForm Model="UserModel" OnValidSubmit="@OnValidSubmit">
-            <DataAnnotationsValidator/>
-            <div class="form-group row">
-                <div class="col-sm-6">
-                    <InputText @bind-Value="@UserModel.DisplayName"
-                               class="form-control"
-                               placeholder="Display Name"
-                               DisplayName="Display Name"></InputText>
-                    <ValidationMessage For="@(() => UserModel.DisplayName)"/>
-                </div>
-                <div class="col-sm-6">
-                    <InputText @bind-Value="@UserModel.UserPrincipalName"
-                               class="form-control"
-                               placeholder="user@email.com"
-                               DisplayName="Username"></InputText>
-                    <ValidationMessage For="@(() => UserModel.UserPrincipalName)"/>
-                </div>
-            </div>
+        <div class="card">
+            <div class="card-header">Create User with Org Email</div>
+            <div class="card-body">
+                @if (isSuccess)
+                {
+                    <div class="alert alert-success">
+                        <pre>User ID: @NewUser.Id</pre>
+                    </div>
+                }
 
-            <div class="form-group row">
-                <div class="col-sm">
-                    <InputText @bind-Value="@UserModel.FirstName"
-                               class="form-control"
-                               placeholder="First Name"
-                               DisplayName="First Name"></InputText>
-                    <ValidationMessage For="@(() => UserModel.FirstName)"/>
-                </div>
-                <div class="col-sm">
-                    <InputText @bind-Value="@UserModel.LastName"
-                               class="form-control"
-                               placeholder="Surname"
-                               DisplayName="Surname"></InputText>
-                    <ValidationMessage For="@(() => UserModel.LastName)"/>
-                </div>
-            </div>
+                <EditForm Model="UserModel" OnValidSubmit="@OnValidSubmit">
+                    <DataAnnotationsValidator/>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <InputText @bind-Value="@UserModel.DisplayName"
+                                       class="form-control"
+                                       placeholder="Display Name"
+                                       DisplayName="Display Name">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.DisplayName)"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <InputText @bind-Value="@UserModel.UserPrincipalName"
+                                       class="form-control"
+                                       placeholder="user@email.com"
+                                       DisplayName="Username">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.UserPrincipalName)"/>
+                        </div>
+                    </div>
 
-            <div class="form-group row">
-                <div class="col-sm">
-                    <InputText @bind-Value="@UserModel.MobilePhone"
-                               class="form-control"
-                               placeholder="Mobile Phone"
-                               DisplayName="Mobile Phone"></InputText>
-                    <ValidationMessage For="@(() => UserModel.MobilePhone)"/>
-                </div>
-            </div>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UserModel.FirstName"
+                                       class="form-control"
+                                       placeholder="First Name"
+                                       DisplayName="First Name">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.FirstName)"/>
+                        </div>
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UserModel.LastName"
+                                       class="form-control"
+                                       placeholder="Surname"
+                                       DisplayName="Surname">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.LastName)"/>
+                        </div>
+                    </div>
 
-            <div class="form-group row">
-                <div class="col-sm">
-                    <InputText @bind-Value="@UserModel.Password"
-                               class="form-control"
-                               placeholder="Password"
-                               type="password"
-                               DisplayName="Password"></InputText>
-                    <ValidationMessage For="@(() => UserModel.Password)"/>
-                </div>
-            </div>
-            
-            <button class="btn btn-primary" type="submit">Save</button>
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UserModel.MobilePhone"
+                                       class="form-control"
+                                       placeholder="Mobile Phone"
+                                       DisplayName="Mobile Phone">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.MobilePhone)"/>
+                        </div>
+                    </div>
 
-        </EditForm>
-        
-        @if(hasError)
-        {
-            <div class="text-danger">
-                @errorLabel
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UserModel.Password"
+                                       class="form-control"
+                                       placeholder="Password"
+                                       type="password"
+                                       DisplayName="Password">
+                            </InputText>
+                            <ValidationMessage For="@(() => UserModel.Password)"/>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Save</button>
+
+                </EditForm>
+
+                @if (hasError)
+                {
+                    <div class="text-danger">
+                        @errorLabel
+                    </div>
+                }
             </div>
-        }
-    </div>
-     <div class="col-xl-6">
-            
-            @if (isSuccess)
-            {
-                <div class="alert alert-success">
-                    <pre>User ID: @NewUser.Id</pre>
-                </div>
-            }
-            
-            <EditForm Model="UserModel" OnValidSubmit="@OnValidSubmitLocal">
-                <DataAnnotationsValidator/>
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <InputText @bind-Value="@UserModel.DisplayName"
-                                   class="form-control"
-                                   placeholder="Display Name"
-                                   DisplayName="Display Name"></InputText>
-                        <ValidationMessage For="@(() => UserModel.DisplayName)"/>
-                    </div>
-                    <div class="col-sm-6">
-                        <InputText @bind-Value="@UserModel.UserPrincipalName"
-                                   class="form-control"
-                                   placeholder="user@email.com"
-                                   DisplayName="Username"></InputText>
-                        <ValidationMessage For="@(() => UserModel.UserPrincipalName)"/>
-                    </div>
-                </div>
-    
-                <div class="form-group row">
-                    <div class="col-sm">
-                        <InputText @bind-Value="@UserModel.FirstName"
-                                   class="form-control"
-                                   placeholder="First Name"
-                                   DisplayName="First Name"></InputText>
-                        <ValidationMessage For="@(() => UserModel.FirstName)"/>
-                    </div>
-                    <div class="col-sm">
-                        <InputText @bind-Value="@UserModel.LastName"
-                                   class="form-control"
-                                   placeholder="Surname"
-                                   DisplayName="Surname"></InputText>
-                        <ValidationMessage For="@(() => UserModel.LastName)"/>
-                    </div>
-                </div>
-    
-                <div class="form-group row">
-                    <div class="col-sm">
-                        <InputText @bind-Value="@UserModel.MobilePhone"
-                                   class="form-control"
-                                   placeholder="Mobile Phone"
-                                   DisplayName="Mobile Phone"></InputText>
-                        <ValidationMessage For="@(() => UserModel.MobilePhone)"/>
-                    </div>
-                </div>
-    
-                <div class="form-group row">
-                    <div class="col-sm">
-                        <InputText @bind-Value="@UserModel.Password"
-                                   class="form-control"
-                                   placeholder="Password"
-                                   type="password"
-                                   DisplayName="Password"></InputText>
-                        <ValidationMessage For="@(() => UserModel.Password)"/>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" type="submit">Save</button>
-    
-            </EditForm>
-            
-            @if(hasError)
-            {
-                <div class="text-danger">
-                    @errorLabel
-                </div>
-            }
         </div>
+    </div>
+
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-header">Create User with Username</div>
+            <div class="card-body">
+                @if (isSuccess)
+                {
+                    <div class="alert alert-success">
+                        <pre>User ID: @NewUser.Id</pre>
+                    </div>
+                }
+
+                <EditForm Model="UsernameModel" OnValidSubmit="@OnValidSubmitLocal">
+                    <DataAnnotationsValidator/>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <InputText @bind-Value="@UsernameModel.DisplayName"
+                                       class="form-control"
+                                       placeholder="Display Name"
+                                       DisplayName="Display Name">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.DisplayName)"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <InputText @bind-Value="@UsernameModel.UserPrincipalName"
+                                       class="form-control"
+                                       placeholder="Username"
+                                       DisplayName="Username">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.UserPrincipalName)"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UsernameModel.FirstName"
+                                       class="form-control"
+                                       placeholder="First Name"
+                                       DisplayName="First Name">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.FirstName)"/>
+                        </div>
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UsernameModel.LastName"
+                                       class="form-control"
+                                       placeholder="Surname"
+                                       DisplayName="Surname">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.LastName)"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UsernameModel.MobilePhone"
+                                       class="form-control"
+                                       placeholder="Mobile Phone"
+                                       DisplayName="Mobile Phone">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.MobilePhone)"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm">
+                            <InputText @bind-Value="@UsernameModel.Password"
+                                       class="form-control"
+                                       placeholder="Password"
+                                       type="password"
+                                       DisplayName="Password">
+                            </InputText>
+                            <ValidationMessage For="@(() => UsernameModel.Password)"/>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Save</button>
+
+                </EditForm>
+
+                @if (hasError)
+                {
+                    <div class="text-danger">
+                        @errorLabel
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
 @code {
 
-    [Inject] public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
+    [Inject]
+    public IOptionsMonitor<AzureAdOptions> OptionsMonitor { get; set; }
 
-    AzureAdOptions _azureAdOptions = new ();
+    AzureAdOptions _azureAdOptions = new();
 
     bool isSuccess;
     bool hasError;
     string errorLabel;
-    public UserDto UserModel { get; set; } = new();
+    public UserWithEmailDto UserModel { get; set; } = new();
+    public UserWithUsernameDto UsernameModel { get; set; } = new();
 
     private User NewUser;
-    
+
     GraphServiceClient graphClient;
 
     private ClientCredentialProvider AuthProvider()
     {
         _azureAdOptions = OptionsMonitor.CurrentValue;
-        
+
         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
             .Create(_azureAdOptions.ClientId)
             .WithTenantId(_azureAdOptions.TenantId)
@@ -202,15 +226,16 @@
 
     private async Task OnValidSubmit()
     {
+        _azureAdOptions = OptionsMonitor.CurrentValue;
         graphClient = new GraphServiceClient(AuthProvider());
-        
+
         var user = new User
         {
             DisplayName = UserModel.DisplayName,
             UserPrincipalName = UserModel.UserPrincipalName,
             GivenName = UserModel.FirstName,
             Surname = UserModel.LastName,
-            // Mail = UserModel.UserPrincipalName,
+    // Mail = UserModel.UserPrincipalName,
             MobilePhone = UserModel.MobilePhone,
             AccountEnabled = true,
             MailNickname = UserModel.DisplayName,
@@ -247,33 +272,35 @@
             _logger.LogError("Could not process the task", e.Message);
         }
     }
-    
+
     private async Task OnValidSubmitLocal()
     {
+        _azureAdOptions = OptionsMonitor.CurrentValue;
         graphClient = new GraphServiceClient(AuthProvider());
-        
+
         var user = new User
         {
-            DisplayName = UserModel.DisplayName,
-            UserPrincipalName = UserModel.UserPrincipalName,
-            GivenName = UserModel.FirstName,
-            Surname = UserModel.LastName,
-            // Mail = UserModel.UserPrincipalName,
-            MobilePhone = UserModel.MobilePhone,
+            DisplayName = UsernameModel.DisplayName,
+            UserType = "Member" ,
+            UserPrincipalName = $"{UsernameModel.UserPrincipalName}@{_azureAdOptions.Domain}",
+            GivenName = UsernameModel.FirstName,
+            Surname = UsernameModel.LastName,
+    // Mail = UserModel.UserPrincipalName,
+            MobilePhone = UsernameModel.MobilePhone,
             AccountEnabled = true,
-            MailNickname = UserModel.DisplayName,
+            MailNickname = UsernameModel.UserPrincipalName,
             PasswordProfile = new PasswordProfile
             {
                 ForceChangePasswordNextSignIn = true,
-                Password = UserModel.Password
+                Password = UsernameModel.Password
             },
             Identities = new List<ObjectIdentity>()
             {
-                new ()
+                new()
                 {
                     SignInType = "userName",
-                    Issuer = "greatideaslabsb2c.onmicrosoft.com",
-                    IssuerAssignedId = UserModel.DisplayName.ToLower()
+                    Issuer = _azureAdOptions.Domain,
+                    IssuerAssignedId = UsernameModel.UserPrincipalName.ToLower()
                 }
             },
             PasswordPolicies = "DisablePasswordExpiration"
