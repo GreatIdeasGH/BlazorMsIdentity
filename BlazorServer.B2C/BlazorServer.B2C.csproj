@@ -8,6 +8,10 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="1.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.14.1" />
+    <PackageReference Include="Skclusive.Material.Component" Version="5.2.0" />
+    <PackageReference Include="Skclusive.Material.Theme" Version="5.2.0" />
+    <PackageReference Include="Skclusive.Script.DomHelpers" Version="5.2.0" />
+    <PackageReference Include="Skclusive.Material.Layout" Version="5.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlazorMsIdentity.Shared\BlazorMsIdentity.Shared.csproj" />
