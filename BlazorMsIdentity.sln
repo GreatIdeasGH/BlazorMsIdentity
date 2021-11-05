@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31825.309
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer.AD", "BlazorServer.AD\BlazorServer.AD.csproj", "{0CC7F341-F8EA-4413-8494-7CD435733170}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer.B2C", "BlazorServer.B2C\BlazorServer.B2C.csproj", "{203F3564-C71E-432F-9BD3-7868E98A678B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMsIdentity.Shared", "BlazorMsIdentity.Shared\BlazorMsIdentity.Shared.csproj", "{EFD95B5C-E64B-49FD-BB2B-BD2D24C0EF08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wasm", "Wasm", "{54C377DF-EC51-412C-B570-86D31BAE5DB7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasm.B2C.Client", "BlazorWasm.B2C\Client\BlazorWasm.B2C.Client.csproj", "{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasm.B2C.Server", "BlazorWasm.B2C\Server\BlazorWasm.B2C.Server.csproj", "{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +33,21 @@ Global
 		{EFD95B5C-E64B-49FD-BB2B-BD2D24C0EF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD95B5C-E64B-49FD-BB2B-BD2D24C0EF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD95B5C-E64B-49FD-BB2B-BD2D24C0EF08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82DB0B33-E863-4B6D-A2A2-006EA0BE3C55} = {54C377DF-EC51-412C-B570-86D31BAE5DB7}
+		{D239E785-3EF5-4FD9-9ED8-6515E1A3ECAC} = {54C377DF-EC51-412C-B570-86D31BAE5DB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6CA758E-BB7A-4A06-8B12-6AF4E780A16A}

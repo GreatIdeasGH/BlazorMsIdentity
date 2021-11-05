@@ -1,4 +1,11 @@
 ﻿@page "/counter"
+@using BlazorMsIdentity.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
@@ -6,13 +13,37 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-<Button>New Button</Button>
+
+<div>
+    <p>UserID: @UserInfo.Id</p>
+    <p>Username: @UserInfo.Name</p>
+    <p>Email: @UserInfo.Email</p>
+</div>
 
 @code {
+
+    public UserInfo UserInfo { get; set; } = new();
+
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+         try
+        {
+            var responseMessage = await Http.GetAsync("WeatherForecast/userinfo");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                UserInfo = await responseMessage.Content.ReadFromJsonAsync<UserInfo>();
+            }    
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
     }
 }
